@@ -66,6 +66,7 @@ class HTTPClient(object):
             out += "Host: " + str(self.url) + "\r\n"
             out += "Content-Type: application/x-www-form-urlencoded\r\n"
             out += "Content-Length: " + str(len(body)) + "\r\n"
+            out += "Accept-Charset: UTF-8\r\n"
             out += "\r\n"
             out += body
             out += "\r\n\r\n"
