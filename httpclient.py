@@ -22,7 +22,7 @@ import sys
 import socket
 import re
 # you may use urllib to encode data appropriately
-from urllib.parse import urlparse, unquote, urlsplit
+from urllib.parse import urlparse, unquote
 
 def help():
     print("httpclient.py [GET/POST] [URL]\n")
@@ -51,8 +51,9 @@ class HTTPClient(object):
     # in the case of a POST
     def generate_request(self, method, args=None):
         if method == "GET":
-            out = "GET " + str(self.path) + " HTTP/1.0\r\n"
+            out = "GET " + str(self.path) + " HTTP/1.1\r\n"
             out += "Host: " + str(self.url) + "\r\n"
+            out += "Connection: close\r\n"
             out += "\r\n"
             return out
         elif method == "POST":
@@ -62,10 +63,11 @@ class HTTPClient(object):
                 for field, value in args.items():
                     body += unquote(field) + "=" + unquote(value) + "&"
             body = body[0:-1] if body else ""
-            out = "POST " + str(self.path) + " HTTP/1.0\r\n"
+            out = "POST " + str(self.path) + " HTTP/1.1\r\n"
             out += "Host: " + str(self.url) + "\r\n"
             out += "Content-Type: application/x-www-form-urlencoded\r\n"
             out += "Content-Length: " + str(len(body)) + "\r\n"
+            out += "Connection: close\r\n"
             out += "\r\n"
             out += body
             out += "\r\n\r\n"
